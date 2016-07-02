@@ -1,0 +1,26 @@
+{
+  "plugins": [ "react" ],
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "classes": true,
+    "destructuring": true,
+    "forOf": true,
+    "modules": true,
+    "jsx": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "strict": [2, "never"],
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2
+  },
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
+}
