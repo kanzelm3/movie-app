@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class MovieCard extends Component {
 
@@ -13,7 +14,25 @@ class MovieCard extends Component {
   render() {
     const { movie } = this.props;
     return (
-      <img style={{ flexGrow: 1 }} src={this.imageUrl} title={movie.get('title')} />
+      <div
+        className="movie-card"
+      >
+        <ReactCSSTransitionGroup
+          transitionName="movie-card"
+          transitionAppearTimeout={800}
+          transitionEnterTimeout={0}
+          transitionLeaveTimeout={0}
+          transitionAppear
+        >
+          <img
+            src={this.imageUrl}
+            title={movie.get('title')}
+          />
+          <div className="movie-card-title">
+            <span className="movie-card-title-text">{movie.get('title')}</span>
+          </div>
+        </ReactCSSTransitionGroup>
+      </div>
     );
   }
 

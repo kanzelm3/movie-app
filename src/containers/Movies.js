@@ -34,7 +34,9 @@ class Movies extends Component {
     const { config, movies } = this.props;
     return (
       <div style={this.styles}>
-        {movies.toList().map(movie => <MovieCard config={config} movie={movie} key={movie.get('id')} />)}
+        {movies.toList().map(movie =>
+          <MovieCard config={config} movie={movie} key={movie.get('id')} />
+        )}
       </div>
     );
   }
