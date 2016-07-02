@@ -6,16 +6,17 @@ class MovieCard extends Component {
   get imageUrl() {
     const { config, movie } = this.props;
     const baseUrl = config.get('baseUrl');
-    const size = config.getIn(['backdropSizes', 0]);
+    const size = config.getIn(['backdropSizes', 1]);
     const image = movie.get('backdropPath');
     return `${baseUrl}/${size}${image}`;
   }
 
   render() {
-    const { movie } = this.props;
+    const { movie, width } = this.props;
     return (
       <div
         className="movie-card"
+        style={{ width }}
       >
         <ReactCSSTransitionGroup
           transitionName="movie-card"

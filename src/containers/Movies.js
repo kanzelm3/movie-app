@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import * as configActions from '../state/modules/config/actions';
 import * as moviesActions from '../state/modules/movies/actions';
-import MovieCard from '../components/MovieCard';
+import MovieGrid from '../components/MovieGrid';
 
 const mapStateToProps = ({ config, movies }) => ({
   isFetching: movies.get('isFetching'),
@@ -17,13 +18,6 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(Object.assign({}, co
 
 class Movies extends Component {
 
-  get styles() {
-    return {
-      display: 'flex',
-      flexWrap: 'wrap'
-    }
-  }
-
   componentWillMount() {
     const { loadConfig, loadMovies, page } = this.props;
     loadConfig();
@@ -31,12 +25,20 @@ class Movies extends Component {
   }
 
   render() {
-    const { config, movies } = this.props;
+    const { config, movies, totalItems } = this.props;
     return (
-      <div style={this.styles}>
-        {movies.toList().map(movie =>
-          <MovieCard config={config} movie={movie} key={movie.get('id')} />
-        )}
+      <div>
+        <ReactCSSTransitionGroup
+          className="movies-title-wrapper"
+          transitionName="movies-title"
+          transitionAppearTimeout={800}
+          transitionEnterTimeout={0}
+          transitionLeaveTimeout={0}
+          transitionAppear
+        >
+          <h1 className="movies-title">Popular</h1>
+        </ReactCSSTransitionGroup>
+        <MovieGrid config={config} movies={movies} totalItems={totalItems} />
       </div>
     );
   }

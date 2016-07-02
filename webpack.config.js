@@ -3,7 +3,11 @@ var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var entry = [ path.resolve(__dirname, 'src', 'index.js') ]
-var plugins = [ new HtmlWebpackPlugin()]
+var plugins = [
+  new HtmlWebpackPlugin({
+    title: 'Movie App'
+  })
+]
 
 if (process.env.NODE_ENV === 'production') {
   plugins = plugins.concat([

@@ -6,7 +6,7 @@ const initialState = Map({
   isFetching: false,
   page: 1,
   itemsPerPage: 20,
-  totalItems: 2000,
+  totalItems: 200,
   ids: List(),
   entities: Map(),
 });
