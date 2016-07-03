@@ -10,7 +10,6 @@ const mapStateToProps = ({ config, movies }) => ({
   isFetching: movies.get('isFetching'),
   config: config.get('images'),
   movies: movies.get('entities'),
-  page: movies.get('page'),
   itemsPerPage: movies.get('itemsPerPage'),
   totalItems: movies.get('totalItems'),
 });
@@ -18,14 +17,24 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(Object.assign({}, co
 
 class Movies extends Component {
 
+  constructor(...args) {
+    super(...args);
+    this.onLoadPages = this.onLoadPages.bind(this);
+  }
+
   componentWillMount() {
-    const { loadConfig, loadMovies, page } = this.props;
+    const { loadConfig, loadMovies } = this.props;
     loadConfig();
-    loadMovies(page);
+    loadMovies(1);
+  }
+
+  onLoadPages(pages) {
+    const { loadMovies } = this.props;
+    pages.forEach(page => loadMovies(page));
   }
 
   render() {
-    const { config, movies, totalItems } = this.props;
+    const { config, movies, totalItems, itemsPerPage } = this.props;
     return (
       <div>
         <ReactCSSTransitionGroup
@@ -38,7 +47,13 @@ class Movies extends Component {
         >
           <h1 className="movies-title">Popular</h1>
         </ReactCSSTransitionGroup>
-        <MovieGrid config={config} movies={movies} totalItems={totalItems} />
+        <MovieGrid
+          config={config}
+          movies={movies}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onLoadPages={this.onLoadPages}
+        />
       </div>
     );
   }

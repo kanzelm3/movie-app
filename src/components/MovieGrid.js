@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import range from 'lodash/range';
 import MovieCard from './MovieCard';
 
 class MovieGrid extends Component {
@@ -16,7 +17,7 @@ class MovieGrid extends Component {
   componentDidUpdate(prevProps) {
     const { movies } = this.props;
     if (!prevProps.movies.size && movies.size) {
-      this.onScreenResize();
+      setTimeout(this.onScreenResize, 800);
     }
   }
 
@@ -41,17 +42,26 @@ class MovieGrid extends Component {
   }
 
   onScroll() {
+    const { onLoadPages, itemsPerPage } = this.props;
     const { el, numPerRow, itemHeight } = this.state;
-    const parent = el.offsetParent;
-    const scrollHeight = parent.clientHeight * 2;
-    const scrollTop = parent.scrollTop - el.offsetTop;
-    const offsetTop = scrollTop > 0 ? scrollTop : 0;
-    const numRows = Math.ceil(scrollHeight / itemHeight);
-    const startRow = Math.floor(offsetTop / itemHeight);
-    this.setState({
-      numRows,
-      startRow,
-    });
+    if (el) {
+      const parent = el.offsetParent;
+      const scrollHeight = window.innerHeight * 2;
+      const scrollTop = parent.scrollTop - el.offsetTop - (scrollHeight * 0.25);
+      const offsetTop = scrollTop > 0 ? scrollTop : 0;
+      const numRows = Math.ceil(scrollHeight / itemHeight);
+      const startRow = Math.floor(offsetTop / itemHeight);
+      const endRow = startRow + numRows - 1;
+      this.setState({
+        numRows,
+        startRow,
+        endRow,
+      });
+      const startPage = Math.ceil((startRow + 1) * numPerRow / itemsPerPage);
+      const endPage = Math.ceil((endRow + 1) * numPerRow / itemsPerPage);
+      const pages = range(startPage, endPage + 1);
+      onLoadPages(pages);
+    }
   }
 
   render() {
@@ -59,7 +69,7 @@ class MovieGrid extends Component {
     const { numPerRow, itemHeight } = this.state;
     return (
       <div className="movies-grid" style={{ height: itemHeight * Math.ceil(totalItems / numPerRow) }}>
-        {movies.toList().map((movie, i) =>
+        {movies.toList().sortBy(movie => -movie.get('popularity')).map((movie, i) =>
           <MovieCard
             width={`${100 / numPerRow}%`}
             config={config}

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import shallowCompare from 'react-addons-shallow-compare';
 
 class MovieCard extends Component {
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
 
   get imageUrl() {
     const { config, movie } = this.props;

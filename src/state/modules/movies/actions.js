@@ -7,13 +7,16 @@ export const loadMoviesSuccess = createAction('load movies success');
 export const loadMoviesFailure = createAction('load movies failure');
 export const loadMovies = (page) => (dispatch, getState) => {
   const state = getState().movies;
-  if (!state.get('isFetching'))
+  if (!state.get('fetchedPages').includes(page))
     return dispatch({
       [CALL_API]: {
         types: [ loadMoviesRequest.getType(), loadMoviesSuccess.getType(), loadMoviesFailure.getType() ],
         endpoint: `/movie/popular?page=${page}`,
         schema: MOVIES_ARRAY,
         getData: (res) => res.results
+      },
+      payload: {
+        page
       }
     });
 };

@@ -54,7 +54,7 @@ export default store => next => action => {
   return callApi(endpoint).then(json => {
     const data = getData(json);
     if (schema) {
-      return normalize(data, schema);
+      return Object.assign({}, json, normalize(data, schema));
     }
     return data;
   }).then(
