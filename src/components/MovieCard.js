@@ -10,7 +10,7 @@ class MovieCard extends Component {
 
   get imageUrl() {
     const { config, movie } = this.props;
-    const baseUrl = config.get('baseUrl');
+    const baseUrl = config.get('secureBaseUrl');
     const size = config.getIn(['backdropSizes', 1]);
     const image = movie.get('backdropPath');
     return `${baseUrl}/${size}${image}`;
