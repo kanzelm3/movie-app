@@ -1,5 +1,6 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
+import merge from 'lodash/merge';
 
 const API_ROOT = 'https://api.themoviedb.org/3'
 
@@ -43,7 +44,7 @@ export default store => next => action => {
   }
 
   function actionWith(data) {
-    const finalAction = Object.assign({}, action, data)
+    const finalAction = merge({}, action, data)
     delete finalAction[CALL_API]
     return finalAction
   }

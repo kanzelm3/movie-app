@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from '../containers/Header';
 
 class BaseLayout extends Component {
   render() {
     const { children } = this.props;
     return (
-      <div>
-        <Header />
-        <div className="app">
-          {React.Children.map(children, child => React.cloneElement(child, this.props))}
+      <MuiThemeProvider>
+        <div>
+          <Header />
+          <div className="app">
+            {React.Children.map(children, child => React.cloneElement(child, this.props))}
+          </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

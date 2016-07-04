@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import shallowCompare from 'react-addons-shallow-compare';
 import * as configActions from '../state/modules/config/actions';
 import * as moviesActions from '../state/modules/movies/actions';
 import MovieGrid from '../components/MovieGrid';
 
 const mapStateToProps = ({ config, movies }) => ({
-  isFetching: movies.get('isFetching'),
+  loading: movies.get('isFetching'),
   config: config.get('images'),
   movies: movies.get('entities'),
   itemsPerPage: movies.get('itemsPerPage'),
@@ -22,10 +23,13 @@ class Movies extends Component {
     this.onLoadPages = this.onLoadPages.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   componentWillMount() {
     const { loadConfig, loadMovies } = this.props;
     loadConfig();
-    loadMovies(1);
   }
 
   onLoadPages(pages) {
@@ -34,7 +38,7 @@ class Movies extends Component {
   }
 
   render() {
-    const { config, movies, totalItems, itemsPerPage } = this.props;
+    const { config, movies, loading, totalItems, itemsPerPage } = this.props;
     return (
       <div>
         <ReactCSSTransitionGroup
@@ -52,6 +56,7 @@ class Movies extends Component {
           movies={movies}
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
+          loading={loading}
           onLoadPages={this.onLoadPages}
         />
       </div>
