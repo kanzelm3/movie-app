@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -64,5 +64,13 @@ class Movies extends Component {
   }
 
 }
+
+Movies.propTypes = {
+  config: PropTypes.object,
+  movies: PropTypes.object,
+  totalItems: PropTypes.number,
+  itemsPerPage: PropTypes.number,
+  loading: PropTypes.bool
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Movies);

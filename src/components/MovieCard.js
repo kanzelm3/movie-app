@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
 import MoviePoster from './MoviePoster';
@@ -46,5 +46,12 @@ class MovieCard extends Component {
   }
 
 }
+
+MovieCard.propTypes = {
+  config: PropTypes.object.isRequired,
+  movie: PropTypes.object.isRequired,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
+};
 
 export default MovieCard;

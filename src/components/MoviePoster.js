@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 
 const PendingPool = {};
@@ -92,5 +92,9 @@ class MoviePoster extends Component {
   }
 
 }
+
+MoviePoster.propTypes = {
+  src: PropTypes.string.isRequired
+};
 
 export default MoviePoster;

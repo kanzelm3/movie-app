@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import range from 'lodash/range';
 import CircularProgress from 'material-ui/CircularProgress';
-import MovieCard, { MOVIE_WIDTH, MOVIE_HEIGHT } from './MovieCard';
 import shallowCompare from 'react-addons-shallow-compare';
+import { calculateCardDimensions, calculatePagesToLoad } from '../state/modules/movies/helpers';
+import MovieCard, { MOVIE_WIDTH, MOVIE_HEIGHT } from './MovieCard';
 
 class MovieGrid extends Component {
   constructor(...args) {
@@ -38,36 +38,27 @@ class MovieGrid extends Component {
   onScreenResize() {
     let { el } = this.state;
     el = !el ? ReactDOM.findDOMNode(this) : el;
-    const numPerRow = Math.ceil(el.clientWidth / MOVIE_WIDTH);
-    const itemWidth = el.clientWidth / numPerRow;
-    const itemHeight = MOVIE_HEIGHT * (itemWidth / MOVIE_WIDTH);
-    this.setState({
-      el,
-      numPerRow,
-      itemHeight,
-    }, this.onScroll);
+    const dimensions = calculateCardDimensions({
+      containerWidth: el.clientWidth,
+      width: MOVIE_WIDTH,
+      height: MOVIE_HEIGHT
+    });
+    this.setState(Object.assign({ el }, dimensions), this.onScroll);
   }
 
   onScroll() {
     const { onLoadPages, itemsPerPage, totalItems } = this.props;
     const { el, numPerRow, itemHeight } = this.state;
     if (el) {
-      const parent = el.offsetParent;
-      // define the infinite scroll height threshold as 2x the height of the window
-      const scrollHeight = window.innerHeight * 2;
-      const scrollTop = parent.scrollTop - el.offsetTop - (scrollHeight * 0.25);
-      const offsetTop = scrollTop > 0 ? scrollTop : 0;
-      // find number of rows that should be loaded based on scroll position
-      const numRows = Math.ceil(scrollHeight / itemHeight);
-      const startRow = Math.floor(offsetTop / itemHeight);
-      const endRow = startRow + numRows - 1;
-      // calculate the pages to request from the API
-      const lastPage = Math.ceil(totalItems / itemsPerPage);
-      let startPage = Math.ceil((startRow + 1) * numPerRow / itemsPerPage);
-      let endPage = Math.ceil((endRow + 1) * numPerRow / itemsPerPage);
-      startPage = startPage < lastPage ? startPage : lastPage;
-      endPage = endPage < lastPage ? endPage : lastPage;
-      const pages = range(startPage, endPage + 1);
+      const pages = calculatePagesToLoad({
+        // define the infinite scroll height threshold as 2x the height of the window
+        scrollHeight: window.innerHeight,
+        scrollPosition: window.scrollY - el.offsetTop,
+        itemHeight,
+        itemsPerPage,
+        totalItems,
+        numPerRow
+      });
       // finally, load the pages that are in view (parent has load logic due to IoC)
       onLoadPages(pages);
     }
@@ -106,5 +97,14 @@ class MovieGrid extends Component {
     );
   }
 }
+
+MovieGrid.propTypes = {
+  config: PropTypes.object,
+  movies: PropTypes.object,
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  loading: PropTypes.bool,
+  onLoadPages: PropTypes.func.isRequired
+};
 
 export default MovieGrid;
