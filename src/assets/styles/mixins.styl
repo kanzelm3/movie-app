@@ -1,3 +1,16 @@
+mediaQueries = {
+  tablet: "only screen and (min-width: 601px)",
+  desktop: "only screen and (min-width: 801px)"
+}
+
+forBreakpoint(breakpoints)
+  conditions = ()
+  for breakpoint in breakpoints
+    push(conditions, mediaQueries[breakpoint])
+  conditions = join(", ", conditions)
+  @media conditions
+    {block}
+
 gradient()
   background -moz-linear-gradient(top, arguments)
   background -webkit-linear-gradient(top, arguments)

@@ -32,8 +32,8 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-        <img className="logo" width="148" height="40" src={NetflixLogo} alt="Netflix" />
-        <nav className="navigation">
+        <img className="logo" src={NetflixLogo} alt="Netflix" />
+        <nav className="navigation main">
           <a style={{ paddingTop: 5 }} href="#" title="Search"><i className="material-icons">search</i></a>
           {this.renderNavItems()}
         </nav>

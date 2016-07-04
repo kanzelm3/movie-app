@@ -4,22 +4,34 @@
   top 0
   left 0
   right 0
-  padding 50px
+  padding 20px
   display flex
   align-items center
+  justify-content space-between
   gradient rgba(33,32,37,0.95) 50%, rgba(33,32,37,0) 100%
   color #999
+  +forBreakpoint(tablet)
+    padding 50px
 
   a
     color #999
     text-decoration none
     text-transform uppercase
 
-  .logo
-    padding-right 100px
-
-  nav
+  nav.main
     flex-grow 1
+    display none
+    +forBreakpoint(desktop)
+      display flex
+
+  .logo
+    width 111px
+    height 30px
+    +forBreakpoint(tablet)
+      width 148px
+      height 40px
+    +forBreakpoint(desktop)
+      padding-right 100px
 
   .navigation
     display flex
@@ -38,5 +50,7 @@
   .avatar
     width 36px
     height 36px
-    margin-left 60px
+    margin-left 20px
     border-radius 50%
+    +forBreakpoint(desktop)
+      margin-left 60px

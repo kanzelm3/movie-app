@@ -5,7 +5,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var entry = [ path.resolve(__dirname, 'src', 'index.js') ]
 var plugins = [
   new HtmlWebpackPlugin({
-    title: 'Movie App'
+    title: 'Movie App',
+    inject: false,
+    template: require('html-webpack-template'),
+    mobile: true,
   })
 ]
 

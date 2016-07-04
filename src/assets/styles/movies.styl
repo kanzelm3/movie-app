@@ -5,8 +5,11 @@
     text-transform: uppercase;
     overflow: hidden;
     margin: 0;
-    font-size: 84px;
-    line-height: 58px;
+    font-size: 58px;
+    line-height: 42px;
+    +forBreakpoint(tablet)
+      font-size: 84px;
+      line-height: 58px;
     &-wrapper
       overflow: hidden;
       display: block;
