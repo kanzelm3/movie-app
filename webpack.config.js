@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
-var entry = [ path.resolve(__dirname, 'src', 'index.js') ]
+var entry = [ 'babel-polyfill', 'whatwg-fetch', path.resolve(__dirname, 'src', 'index.js') ]
 var plugins = [
   new HtmlWebpackPlugin({
     title: 'Movie App',
